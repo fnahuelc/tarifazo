@@ -17,11 +17,11 @@ age_nivel_3 = 0
 final = False
 
 class ImageInfo:
-    def __init__(self, center, size, radius = 0, lifespan = None, animated = False, resize = 1):
+    def __init__(self, center, size, radius = 0, lifespan = None, animated = False, resize = 1.0):
         self.center = center
         self.size = size
         self.radius = radius
-        self.resize = resize
+        self.resize = float(resize)
         
         if lifespan:
             self.lifespan = lifespan
@@ -46,7 +46,12 @@ class ImageInfo:
     
     def get_resize(self):
         return self.resize
-    
+
+    def get_resized(self):
+        return (self.size[0] * self.resize, self.size[1] * self.resize)
+
+    def get_centered_resized(self):
+        return (self.get_resized()[0]/2, self.get_resized()[1]/2)
 
 def draw_animated(canvas,image,info,pos = (WIDTH/2, HEIGHT/2),resize = 1):
         global age_macri
@@ -55,7 +60,7 @@ def draw_animated(canvas,image,info,pos = (WIDTH/2, HEIGHT/2),resize = 1):
         current_center = [info.get_center()[0] +  current_index * info.get_size()[0], info.get_center()[1]]
         
         canvas.draw_image(image, current_center, info.get_size(),
-                         pos, [info.get_size()[0]*resize,info.get_size()[1]*resize])
+                         pos, [info.get_size()[0]*resize, info.get_size()[1]*resize])
         age_macri += .08
 
 def draw_animated_costado(canvas,image,info,sound,resize):
@@ -93,8 +98,9 @@ nebula_image = simplegui.load_image("http://www.unidiversidad.com.ar/cache_2/ars
 nebula_2 = simplegui.load_image("https://dl.dropboxusercontent.com/s/fy74elzova1ia9i/51767658_299872170729270_2577318185367764992_n.png?dl=0")
 nebula_3 = simplegui.load_image("https://dl.dropboxusercontent.com/s/zczcwt3xxime9wz/maxresdefault_800x600.jpg?dl=0")
 # splash image
-splash_info = ImageInfo([200, 150], [400, 300])
-splash_image = simplegui.load_image("https://raw.githubusercontent.com/fnahuelc/tarifazo/master/media/51767658_299872170729270_2577318185367764992_n.png")
+
+splash_info = ImageInfo([794, 1123], [1588, 2246], resize=0.2)
+splash_image = simplegui.load_image("https://raw.githubusercontent.com/fnahuelc/tarifazo/master/media/canvas.png")
 
 # ship image
 ship_info = ImageInfo([45, 45], [90, 90], 35)
@@ -458,10 +464,14 @@ def draw(canvas):
     # draw splash screen if not started
     if not started:
 #        draw_animated(canvas,macri_image,macri_info,(WIDTH/2-250,HEIGHT/2-40))          
-        canvas.draw_image(splash_image, splash_info.get_center(), 
-                          splash_info.get_size(), [WIDTH / 2, HEIGHT / 2], 
-                          splash_info.get_size())
-        
+
+        canvas.draw_image(splash_image,
+                          splash_info.get_center(),
+                          splash_info.get_size(),
+                          [WIDTH/2, HEIGHT/2],
+                          splash_info.get_resized()
+
+                          )
         rock_group = set([])
         missile_group = set([]) 
         bonus_group = set([]) 
