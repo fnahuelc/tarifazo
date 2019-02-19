@@ -99,7 +99,7 @@ nebula_2 = simplegui.load_image("https://dl.dropboxusercontent.com/s/fy74elzova1
 nebula_3 = simplegui.load_image("https://dl.dropboxusercontent.com/s/zczcwt3xxime9wz/maxresdefault_800x600.jpg?dl=0")
 # splash image
 
-splash_info = ImageInfo([794, 1123], [1588, 2246], resize=0.2)
+splash_info = ImageInfo([794, 1123], [1588, 2246], resize=0.20)
 splash_image = simplegui.load_image("https://raw.githubusercontent.com/fnahuelc/tarifazo/master/media/canvas.png")
 
 # ship image
@@ -111,7 +111,7 @@ missile_info = ImageInfo([5,5], [10, 10], 3, 50)
 missile_image = simplegui.load_image("http://i.imgur.com/I4TWrLd.gif")
 
 # asteroid images - asteroid_blue.png, asteroid_brown.png, asteroid_blend.png
-asteroid_info = ImageInfo([35, 35], [70, 70], 30)
+asteroid_info = ImageInfo([109, 141], [218, 283], 30, resize=.3)
 asteroid_image = simplegui.load_image("https://raw.githubusercontent.com/fnahuelc/tarifazo/master/media/macri.png")
 
 # animated explosion - explosion_orange.png, explosion_blue.png, explosion_blue2.png, explosion_alpha.png
@@ -410,20 +410,21 @@ def draw(canvas):
     canvas.draw_text("Puntos", [680, 50], 22, "White")
     canvas.draw_text(str(lives), [50, 80], 22, "White")
     canvas.draw_text(str(score * 10), [680, 80], 22, "White")
-           
+
     canvas.draw_text(str(bonus2 * 10), [305, 80], 22, "White")
     canvas.draw_text(str(bonus1 * 10), [380, 80], 22, "White")
+    if started:
 
-    # draw ship and sprites
-    my_ship.draw(canvas)
-    
-    # update ship and sprites
-    my_ship.update()
-    
-    process_sprite_group(canvas,rock_group)
-    process_sprite_group(canvas,missile_group)
-    process_sprite_group(canvas,bonus_group)
-    process_sprite_group(canvas,explosion_group)
+        # draw ship and sprites
+        my_ship.draw(canvas)
+
+        # update ship and sprites
+        my_ship.update()
+
+        process_sprite_group(canvas,rock_group)
+        process_sprite_group(canvas,missile_group)
+        process_sprite_group(canvas,bonus_group)
+        process_sprite_group(canvas,explosion_group)
     
     if final:
         for object_in_group in set(rock_group):
